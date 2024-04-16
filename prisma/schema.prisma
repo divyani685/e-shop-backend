@@ -37,6 +37,8 @@ model User {
     emailVerified  DateTime?
     password       String
     image          String?
+    otp            String?
+    otpExpiry      DateTime?
     hashedPassword String?
     role           Role      @default(USER)
     accounts       Account[]

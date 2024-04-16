@@ -4,6 +4,7 @@ import { userFunction } from "../functions/user.functions";
 export const userController: {
   signUpUserController: RequestHandler;
   signInUserController: RequestHandler;
+  forgotPasswordController: RequestHandler;
 } = {
   async signUpUserController(req, res, next) {
     try {
@@ -31,7 +32,21 @@ export const userController: {
         msg: "Login successfully!!",
       });
     } catch (error) {
-      throw error;
+      next(error);
+    }
+  },
+  async forgotPasswordController(req, res, next) {
+    try {
+      const data = req.body;
+
+      const otp = await userFunction.forgotPasswordFunction(data);
+      res.json({
+        success: true,
+        data: otp,
+        msg: "OTP sent successfully",
+      });
+    } catch (error) {
+      next(error);
     }
   },
 };
