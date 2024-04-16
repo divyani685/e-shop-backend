@@ -1,6 +1,6 @@
 import cors from "cors";
 import express from "express";
-import router from "./apis/routes/register.routes";
+import router from "./apis/routes/user.routes";
 import { errorHandler } from "./middlewares/error.middleware";
 const app = express();
 const PORT = process.env.PORT || 8000;
