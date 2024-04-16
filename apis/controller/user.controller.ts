@@ -5,6 +5,8 @@ export const userController: {
   signUpUserController: RequestHandler;
   signInUserController: RequestHandler;
   forgotPasswordController: RequestHandler;
+  otpVerificationController: RequestHandler;
+  resetPasswordController: RequestHandler;
 } = {
   async signUpUserController(req, res, next) {
     try {
@@ -44,6 +46,32 @@ export const userController: {
         success: true,
         data: otp,
         msg: "OTP sent successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  async otpVerificationController(req, res, next) {
+    try {
+      const data = req.body;
+      console.log("body data---", data);
+      await userFunction.otpVerificationFunction(data.data.otp, data.email);
+      res.json({
+        success: true,
+        msg: "OTP is verified",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  async resetPasswordController(req, res, next) {
+    try {
+      const data = req.body;
+      console.log("body data---", data);
+      await userFunction.resetPasswordFunction(data);
+      res.json({
+        success: true,
+        msg: "Password reset successfully",
       });
     } catch (error) {
       next(error);

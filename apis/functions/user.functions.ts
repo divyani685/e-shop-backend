@@ -55,14 +55,11 @@ export const userFunction = {
       let otp = Math.floor(Math.random() * 999999)
         .toString()
         .padStart(6, "0");
-
-      // let otp = Math.floor(Math.random() * 999999);
-      // otp = Number(otp.toString().padEnd(6, "0"));
-
       const currentDate = new Date();
       const otpExpiry = new Date(
         currentDate.setMinutes(currentDate.getMinutes() + 1)
       );
+
       const otpValue = await prisma.user.update({
         where: {
           id: isUserExist.id,
@@ -73,9 +70,31 @@ export const userFunction = {
         },
       });
       const subject = "Password Reset";
-      const template = forgotPassword(otpValue as any);
+      const template = forgotPassword(otpValue.otp as any);
       const otpVal = emailService.sendMail(data.email, subject, template);
       return otpVal;
+    } catch (error) {
+      throw error;
+    }
+  },
+  async otpVerificationFunction(otp: string, email: string) {
+    try {
+      const isOtpCorrect = await prisma.user.findFirst({
+        where: {
+          email: email,
+          otp: otp,
+        },
+      });
+      if (!isOtpCorrect) {
+        throw new NotFound("otp is Incorrect");
+      }
+      console.log({ isOtpCorrect });
+    } catch (error) {
+      throw error;
+    }
+  },
+  async resetPasswordFunction(data: string) {
+    try {
     } catch (error) {
       throw error;
     }

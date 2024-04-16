@@ -2,7 +2,6 @@ import nodemailer from "nodemailer";
 const emailService = {
   sendMail(to: string, subject: string, html: any) {
     try {
-      console.log({ to });
       const transport = nodemailer.createTransport({
         service: "gmail",
         // port: 587,
@@ -11,14 +10,8 @@ const emailService = {
           pass: `${process.env.MAIL_PASS}`,
         },
       });
-      console.log({
-        // transport,
-        MAIL: process.env.MAIL_USER,
-        PASS: process.env.MAIL_PASS,
-        HOST: process.env.HOST,
-      });
       const mailOptions = {
-        from: `"Example Team" <${process.env.MAIL_USER}>`,
+        from: `"E-Shop Support Team" <${process.env.MAIL_USER}>`,
         to,
         subject,
         html,
@@ -31,7 +24,6 @@ const emailService = {
         }
         console.log("Successfully sent");
       });
-      console.log("after send");
     } catch (error) {
       throw error;
     }

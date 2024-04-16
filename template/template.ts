@@ -291,6 +291,7 @@ export const forgotPassword = (otp: string) => `<!DOCTYPE html>
     <title>Forgot Password</title>
 </head>
 <body>
+
     <p>Hello,</p>
     <p>You have requested to reset your password. Please enter the OTP below to set your new password:</p>
     <p>OTP: ${otp}</p>
