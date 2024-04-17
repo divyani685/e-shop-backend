@@ -32,7 +32,7 @@ export const userFunction = {
         password,
         findUser?.password as string
       );
-      if (!isPasswordValid) throw new Error("Invalid password");
+      if (!isPasswordValid) throw new Error("Incorrect email id/password");
       const token = jwt.sign(
         { userId: findUser?.id, role: findUser?.role },
         process.env.JWT_SECRET as string
@@ -93,8 +93,38 @@ export const userFunction = {
       throw error;
     }
   },
-  async resetPasswordFunction(data: string) {
+  async resetPasswordFunction(
+    newPassword: string,
+    email: string,
+    password: string
+  ) {
     try {
+      const hashedPassword = await bcrypt.hash(newPassword as string, 10);
+      const user = await prisma.user.findFirst({
+        where: {
+          email: email,
+        },
+      });
+      if (!user) {
+        throw new NotFound("User doesn't exist");
+      }
+      const isOldPassword = await bcrypt.compare(newPassword, user?.password);
+
+      if (isOldPassword) {
+        throw new NotFound("New password should not be equal to old password");
+      }
+      if (newPassword !== password) {
+        throw new NotFound("Confirm password should be equal to new password");
+      }
+      const registerData = await prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+      return registerData;
     } catch (error) {
       throw error;
     }

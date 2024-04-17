@@ -11,6 +11,7 @@ export const userController: {
   async signUpUserController(req, res, next) {
     try {
       const data = req.body;
+      console.log(data);
       const createUser = await userFunction.signUpUser(data);
       res.json({
         success: true,
@@ -24,7 +25,7 @@ export const userController: {
   async signInUserController(req, res, next) {
     try {
       const data = req.body;
-      console.log("req body", data);
+
       const { token, findUser } = await userFunction.signInUser(data);
       console.log({ findUser });
       res.json({
@@ -67,8 +68,11 @@ export const userController: {
   async resetPasswordController(req, res, next) {
     try {
       const data = req.body;
-      console.log("body data---", data);
-      await userFunction.resetPasswordFunction(data);
+      await userFunction.resetPasswordFunction(
+        data.data.newpassword,
+        data.email,
+        data.data.password
+      );
       res.json({
         success: true,
         msg: "Password reset successfully",
