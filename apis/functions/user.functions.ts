@@ -90,6 +90,7 @@ export const userFunction = {
       }
       console.log({ isOtpCorrect });
     } catch (error) {
+      console.log("object");
       throw error;
     }
   },
