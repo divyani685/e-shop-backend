@@ -25,9 +25,11 @@ export const userController: {
   async signInUserController(req, res, next) {
     try {
       const data = req.body;
-
+      const header = req.header;
+      console.log(header);
+      console.log(data);
       const { token, findUser } = await userFunction.signInUser(data);
-      console.log({ findUser });
+      console.log({ findUser, token });
       res.json({
         success: true,
         data: findUser,

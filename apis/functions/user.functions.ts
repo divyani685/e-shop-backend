@@ -88,7 +88,6 @@ export const userFunction = {
       if (!isOtpCorrect) {
         throw new NotFound("otp is Incorrect");
       }
-      console.log({ isOtpCorrect });
     } catch (error) {
       console.log("object");
       throw error;
