@@ -7,12 +7,14 @@ export const userController: {
   forgotPasswordController: RequestHandler;
   otpVerificationController: RequestHandler;
   resetPasswordController: RequestHandler;
+  getCurrentUserController: RequestHandler;
 } = {
   async signUpUserController(req, res, next) {
     try {
       const data = req.body;
       console.log(data);
       const createUser = await userFunction.signUpUser(data);
+      console.log({ createUser });
       res.json({
         success: true,
         data: createUser,
@@ -25,11 +27,8 @@ export const userController: {
   async signInUserController(req, res, next) {
     try {
       const data = req.body;
-      const header = req.header;
-      console.log(header);
-      console.log(data);
       const { token, findUser } = await userFunction.signInUser(data);
-      console.log({ findUser, token });
+
       res.json({
         success: true,
         data: findUser,
@@ -80,6 +79,21 @@ export const userController: {
         msg: "Password reset successfully",
       });
     } catch (error) {
+      next(error);
+    }
+  },
+  async getCurrentUserController(req, res, next) {
+    try {
+      const id = req.user?.id;
+      const currentUser = await userFunction.getCurrentUserFunction(id);
+      console.log({ currentUser });
+      res.json({
+        success: true,
+        data: currentUser,
+        msg: "Current User get successfully!!",
+      });
+    } catch (error) {
+      console.log({ error });
       next(error);
     }
   },

@@ -129,4 +129,19 @@ export const userFunction = {
       throw error;
     }
   },
+  async getCurrentUserFunction(id: any) {
+    try {
+      const findUser = await prisma?.user.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (!findUser) {
+        throw new NotFound("User doesn't exist");
+      }
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  },
 };
